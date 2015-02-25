@@ -45,11 +45,15 @@ include $(TARGET_KERNEL_SOURCE)/AndroidKernel.mk
 # So cp will do.
 .PHONY: $(PRODUCT_OUT)/kernel $(PRODUCT_OUT)/u-boot.bin
 $(PRODUCT_OUT)/kernel: $(TARGET_PREBUILT_KERNEL)
+	echo "==> After kernel build..."
 	cp $(TARGET_PREBUILT_KERNEL) $(PRODUCT_OUT)/kernel
 
 include $(TARGET_U_BOOT_SOURCE)/AndroidU-Boot.mk
 $(PRODUCT_OUT)/u-boot.bin: $(TARGET_PREBUILT_U-BOOT)
+	echo "==> After U-Boot build..."
 	cp $(TARGET_PREBUILT_U-BOOT) $(PRODUCT_OUT)/u-boot.bin
+	mkimage -A arm -C none -O linux -T kernel -d $(PRODUCT_OUT)/obj/KERNEL_OBJ/arch/arm/boot/zImage -a 0x00010000 -e 0x00010000 $(PRODUCT_OUT)/system/zImage.uimg
+	mkimage -A arm -C none -O linux -T ramdisk -d $(PRODUCT_OUT)/ramdisk.img -a 0x00800000 -e 0x00800000 $(PRODUCT_OUT)/system/rootfs.uimg
 
 LOCAL_U_BOOT := $(TARGET_PREBUILT_U-BOOT)
 
@@ -62,8 +66,11 @@ endif
 PRODUCT_COPY_FILES += \
      $(LOCAL_U_BOOT):u-boot.bin \
      $(LOCAL_KERNEL):kernel \
-     $(LOCAL_KERNEL):system/kernel \
-     out/target/product/armemu/ramdisk.img:system/ramdisk.img \
      device/generic/armemu/init.recovery.armemu.rc:root/init.recovery.armemu.rc \
      device/generic/armemu/init.recovery.armemu.sh:root/init.recovery.armemu.sh
+
+#     $(LOCAL_KERNEL):system/kernel \
+#     out/target/product/armemu/ramdisk.img:system/ramdisk.img \
+
+# DEVICE_PACKAGE_OVERLAYS := device/generic/armemu/overlay
 
