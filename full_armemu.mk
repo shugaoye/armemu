@@ -56,8 +56,8 @@ $(TARGET_KERNEL_UIMAGE): $(TARGET_PREBUILT_KERNEL)
 $(TARGET_RAMDISK_UIMAGE): $(PRODUCT_OUT)/ramdisk.img
 	mkimage -A arm -C none -O linux -T ramdisk -d $(PRODUCT_OUT)/ramdisk.img -a 0x00800000 -e 0x00800000 $(TARGET_RAMDISK_UIMAGE)
 
-$(TARGET_RECOVERY_UIMAGE): $(PRODUCT_OUT)/ramdisk-recovery.img
-	mkimage -A arm -C none -O linux -T ramdisk -d $(PRODUCT_OUT)/ramdisk-recovery.img -a 0x00800000 -e 0x00800000 $(TARGET_RECOVERY_UIMAGE)
+#$(TARGET_RECOVERY_UIMAGE): $(PRODUCT_OUT)/ramdisk-recovery.img
+#	mkimage -A arm -C none -O linux -T ramdisk -d $(PRODUCT_OUT)/ramdisk-recovery.img -a 0x00800000 -e 0x00800000 $(TARGET_RECOVERY_UIMAGE)
 
 LOCAL_U_BOOT := $(TARGET_PREBUILT_U-BOOT)
 
@@ -69,14 +69,14 @@ endif
 
 LOCAL_KERNEL_UIMAGE := $(TARGET_KERNEL_UIMAGE)
 LOCAL_RAMDISK_UIMAGE := $(TARGET_RAMDISK_UIMAGE)
-LOCAL_RECOVERY_UIMAGE := $(TARGET_RECOVERY_UIMAGE)
+# LOCAL_RECOVERY_UIMAGE := $(TARGET_RECOVERY_UIMAGE)
 
 PRODUCT_COPY_FILES += \
      $(LOCAL_U_BOOT):u-boot.bin \
      $(LOCAL_KERNEL):kernel \
      $(LOCAL_KERNEL_UIMAGE):system/zImage.uimg \
      $(LOCAL_RAMDISK_UIMAGE):system/ramdisk.uimg \
-     $(LOCAL_RECOVERY_UIMAGE):system/ramdisk-recovery.uimg \
+#     $(LOCAL_RECOVERY_UIMAGE):system/ramdisk-recovery.uimg \
      device/generic/armemu/init.recovery.armemu.rc:root/init.recovery.armemu.rc \
      device/generic/armemu/init.recovery.armemu.sh:root/init.recovery.armemu.sh
 
